@@ -1,9 +1,8 @@
 import { OrbitControls } from '@react-three/drei';
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Stages } from './app';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useStore } from './store';
 import * as THREE from 'three';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useUpdate, useThree } from '@react-three/fiber';
 
 // TODO: Implement the PerspectiveCamera with portaling
 
@@ -23,12 +22,12 @@ export function CameraController() {
     return () => set(() => ({ camera: oldCam }));
   }, [set]);
 
-  useFrame(() => {
+  useUpdate(() => {
     if (!player) return;
     camera.position.sub(controlsRef.current.target);
     controlsRef.current.target.copy(player.position);
     camera.position.add(player.position);
-  }, Stages.Update);
+  });
 
   return (
     <OrbitControls

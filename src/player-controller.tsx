@@ -1,8 +1,7 @@
 import { VectorControl, BooleanControl, Controller, KeyboardDevice } from '@hmans/controlfreak';
-import { useFrame } from '@react-three/fiber';
+import { Stages, useUpdate } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import { useController } from './controller';
-import { Stages } from './app';
 import * as THREE from 'three';
 import { useMachine } from '@xstate/react';
 import { useStore } from './store';
@@ -53,7 +52,7 @@ export function usePlayerControls() {
   });
   const controller = useController();
 
-  useFrame(() => {
+  useUpdate(() => {
     const forward = controller.controls.move?.value.y > 0 ?? false;
     const backward = controller.controls.move?.value.y < 0 ?? false;
     const left = controller.controls.move?.value.x < 0 ?? false;
@@ -118,7 +117,7 @@ export function PlayerController({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Player movement loop
-  useFrame((state, delta) => {
+  useUpdate((state, delta) => {
     const { move, jump: isJumping } = controls.current;
     const isMoving = move.forward || move.backward || move.left || move.right;
 
@@ -155,7 +154,7 @@ export function PlayerController({ children }: { children: React.ReactNode }) {
     characterRef.current.updateMatrixWorld();
   }, Stages.Update);
 
-  useFrame((state, delta) => {
+  useUpdate((state, delta) => {
     if (!collider?.geometry?.boundsTree) return;
 
     // Prepare the line segment that we will use to check for collisions

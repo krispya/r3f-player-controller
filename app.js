@@ -1,29 +1,23 @@
-import { Environment, OrbitControls } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { useLayoutEffect } from 'react'
-import { useController } from './controller'
-import { Level } from './level'
-import { PlayerController } from './player-controller'
-import { Player } from './player'
-
-export const Stages = {
-  Early: -200,
-  Update: -100,
-  Late: 0
-}
+import { Environment, OrbitControls } from '@react-three/drei';
+import { Canvas, useUpdate, Stages } from '@react-three/fiber';
+import { useLayoutEffect } from 'react';
+import { useController } from './controller';
+import { Level } from './level';
+import { PlayerController } from './player-controller';
+import { Player } from './player';
 
 function Game() {
-  const controller = useController()
+  const controller = useController();
 
   // Start our controller
   useLayoutEffect(() => {
-    controller.start()
-  }, [controller])
+    controller.start();
+  }, [controller]);
 
   // Update the controller on an early loop
-  useFrame(() => {
-    controller.update()
-  }, Stages.Early)
+  useUpdate(() => {
+    controller.update();
+  }, Stages.Early);
 
   return (
     <>
@@ -37,7 +31,7 @@ function Game() {
 
       <OrbitControls />
     </>
-  )
+  );
 }
 
 export default function App() {
@@ -45,5 +39,5 @@ export default function App() {
     <Canvas shadows gl={{ physicallyBasedLights: true }} camera={{ position: [5, 3, -10], fov: 50 }}>
       <Game />
     </Canvas>
-  )
+  );
 }

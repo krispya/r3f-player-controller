@@ -1,14 +1,13 @@
-import { useFrame } from '@react-three/fiber';
+import { Stages, useUpdate } from '@react-three/fiber';
 import { useRef } from 'react';
 import { Environment, Stars } from '@react-three/drei';
 import { LayerMaterial, Color, Depth } from 'lamina';
 import * as THREE from 'three';
-import { Stages } from '../app';
 
 export default function Space() {
   const depthRef = useRef<any>(null!);
 
-  useFrame(({ clock }) => {
+  useUpdate(({ clock }) => {
     if (depthRef.current) {
       depthRef.current.alpha = Math.sin(clock.elapsedTime * 0.1) * 0.4 + 0.4;
     }

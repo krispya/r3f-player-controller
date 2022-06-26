@@ -1,6 +1,6 @@
 import './app.css';
 import { Environment, OrbitControls, useHelper } from '@react-three/drei';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useUpdate, Stages } from '@react-three/fiber';
 import { Suspense, useLayoutEffect, useRef } from 'react';
 import { useController } from './controller';
 import { PlayerController } from './player-controller';
@@ -12,12 +12,6 @@ import { Collider } from './collider';
 import Space from './level/space';
 import * as THREE from 'three';
 
-export const Stages = {
-  Early: -200,
-  Update: -100,
-  Late: 0,
-};
-
 function Game() {
   const controller = useController();
 
@@ -27,7 +21,7 @@ function Game() {
   }, [controller]);
 
   // Update the controller on an early loop
-  useFrame(() => {
+  useUpdate(() => {
     controller.update();
   }, Stages.Early);
 
